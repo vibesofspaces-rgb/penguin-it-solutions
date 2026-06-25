@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Penguin IT Solutions - Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            },
+            dark: {
+              bg: '#0f172a',
+              card: '#1e293b',
+              text: '#f1f5f9',
+              textSecondary: '#94a3b8',
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+    .gradient-bg { background: #ffffff; }
+    .dark .gradient-bg { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+    .nav-link { position: relative; transition: all 0.3s ease; }
+    .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #38bdf8; transition: width 0.3s ease; }
+    .nav-link:hover::after { width: 100%; }
+    .form-input { background: transparent; border: 1px solid #334155; transition: all 0.3s ease; }
+    .form-input:focus { outline: none; border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1); }
+    .submit-btn { background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%); transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.4); }
+    .fade-in { animation: fadeIn 0.6s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-white dark:bg-dark-bg text-gray-900 dark:text-dark-text transition-colors duration-300">
+
+<!-- Login Overlay -->
+<div id="loginOverlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-white dark:bg-dark-bg transition-colors duration-300">
+  <div class="w-full max-w-md mx-4">
+    <div class="bg-white dark:bg-dark-card rounded-2xl p-10 shadow-2xl border border-gray-200 dark:border-dark-text-secondary">
+      <div class="text-center mb-8">
+        <img src="/logo.jpg" alt="Penguin IT Solutions" class="h-16 w-16 mx-auto mb-4 object-contain">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Admin Access</h1>
+        <p class="text-gray-600 dark:text-dark-text-secondary mt-2 text-sm">Enter password to continue</p>
+      </div>
+      <div class="space-y-4">
+        <input type="password" id="passwordInput" class="form-input w-full px-4 py-3 rounded-lg text-lg text-center" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkPassword()">
+        <button onclick="checkPassword()" class="submit-btn w-full text-white px-8 py-3 rounded-lg font-medium text-lg">
+          Unlock
+        </button>
+        <p id="loginError" class="text-red-500 text-sm text-center hidden">Incorrect password</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+  <div class="gradient-bg backdrop-blur-md bg-opacity-90">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center space-x-3">
+          <img src="/logo.jpg" alt="Penguin IT Solutions" class="h-10 w-10"><span class="text-xl font-bold text-gray-900 dark:text-white">Penguin IT Solutions</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="src/index.html#home" class="nav-link text-gray-900 dark:text-white hover:text-primary-500 dark:hover:text-primary-400">Home</a>
+          <a href="src/index.html#services" class="nav-link text-gray-900 dark:text-white hover:text-primary-500 dark:hover:text-primary-400">Services</a>
+          <a href="src/index.html#about" class="nav-link text-gray-900 dark:text-white hover:text-primary-500 dark:hover:text-primary-400">About</a>
+          <a href="admin.html" class="nav-link text-gray-900 dark:text-white hover:text-primary-500 dark:hover:text-primary-400">Admin</a>
+          <a href="src/index.html#contact" class="nav-link text-gray-900 dark:text-white hover:text-primary-500 dark:hover:text-primary-400">Contact</a>
+          <div class="theme-toggle flex items-center space-x-4" onclick="toggleTheme()">
+            <span class="text-gray-900 dark:text-white text-sm">Dark Mode</span>
+            <div class="w-12 h-6 bg-gray-700 rounded-full p-1 cursor-pointer transition-colors" id="toggleTrack">
+              <div class="w-4 h-4 bg-white rounded-full transition-all duration-300" id="toggleThumb"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Admin Section -->
+<section class="pt-32 min-h-screen fade-in">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h1 class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4">Admin Dashboard</h1>
+      <p class="text-lg text-gray-600 dark:text-dark-text-secondary max-w-2xl mx-auto">
+        Manage site statistics and settings.
+      </p>
+    </div>
+
+    <div class="max-w-4xl mx-auto space-y-8">
+      <!-- Site Stats Editor -->
+      <div class="bg-white dark:bg-dark-card rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-dark-text-secondary">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Site Statistics</h2>
+        <p class="text-gray-600 dark:text-dark-text-secondary mb-6">These values appear on the homepage About section.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-dark-text-secondary mb-2">Projects Completed</label>
+            <input type="number" id="inputProjects" class="form-input w-full px-4 py-3 rounded-lg" value="100" min="0">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-dark-text-secondary mb-2">Happy Clients</label>
+            <input type="number" id="inputClients" class="form-input w-full px-4 py-3 rounded-lg" value="50" min="0">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-dark-text-secondary mb-2">Years Experience</label>
+            <input type="number" id="inputYears" class="form-input w-full px-4 py-3 rounded-lg" value="10" min="0">
+          </div>
+        </div>
+        <div class="mt-6">
+          <button onclick="saveStats()" class="bg-primary-500 hover:bg-primary-600 text-white px-8 py-3 rounded-lg font-medium transition-all duration-300">Save Statistics</button>
+          <span id="statsSaved" class="ml-4 text-green-500 font-medium hidden">Saved!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 dark:bg-black text-white py-12 mt-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="border-t border-gray-800 pt-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 text-sm mb-4 md:mb-0">&copy; 2026 Penguin IT Solutions. All rights reserved.</p>
+        <div class="flex space-x-6 text-sm text-gray-400">
+          <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+          <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+          <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Security: block right-click
+  document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+
+  // Security: block keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'U')) {
+      e.preventDefault();
+    }
+  });
+
+  // Security: detect DevTools
+  (function() {
+    var t = /./;
+    t.toString = function() {
+      window.location.reload();
+      return '';
+    };
+    setInterval(function() {
+      if (window.outerWidth - window.innerWidth > 200 || window.outerHeight - window.innerHeight > 200) {
+        window.location.reload();
+      }
+    }, 1000);
+  })();
+
+  // Password hash
+  var _p = function(s) { var h = 0; for (var i = 0; i < s.length; i++) { h = ((h << 5) - h) + s.charCodeAt(i); h |= 0; } return h; };
+  var _t = -1519438160;
+
+  function checkPassword() {
+    var input = document.getElementById('passwordInput').value;
+    if (_p(input) === _t) {
+      sessionStorage.setItem('adminAuth', '1');
+      document.getElementById('loginOverlay').style.display = 'none';
+      document.getElementById('passwordInput').value = '';
+    } else {
+      document.getElementById('loginError').classList.remove('hidden');
+      document.getElementById('passwordInput').value = '';
+    }
+  }
+
+  // Check auth on load
+  (function() {
+    if (sessionStorage.getItem('adminAuth') === '1') {
+      document.getElementById('loginOverlay').style.display = 'none';
+    }
+  })();
+
+  function initializeTheme() {
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  }
+
+  function toggleTheme() {
+    var html = document.documentElement;
+    var thumb = document.getElementById('toggleThumb');
+    if (html.classList.contains('dark')) {
+      html.classList.remove('dark'); localStorage.setItem('theme', 'light'); thumb.classList.remove('translate-x-6');
+    } else {
+      html.classList.add('dark'); localStorage.setItem('theme', 'dark'); thumb.classList.add('translate-x-6');
+    }
+  }
+
+  function initThemeIcon() {
+    var thumb = document.getElementById('toggleThumb');
+    if (thumb && localStorage.getItem('theme') === 'dark') { thumb.classList.add('translate-x-6'); }
+  }
+
+  function loadStats() {
+    var stats = JSON.parse(localStorage.getItem('siteStats'));
+    if (stats) {
+      document.getElementById('inputProjects').value = stats.projects;
+      document.getElementById('inputClients').value = stats.clients;
+      document.getElementById('inputYears').value = stats.years;
+    }
+  }
+
+  function saveStats() {
+    var stats = {
+      projects: document.getElementById('inputProjects').value,
+      clients: document.getElementById('inputClients').value,
+      years: document.getElementById('inputYears').value,
+    };
+    localStorage.setItem('siteStats', JSON.stringify(stats));
+    var saved = document.getElementById('statsSaved');
+    saved.classList.remove('hidden');
+    setTimeout(function() { saved.classList.add('hidden'); }, 2000);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    initializeTheme();
+    initThemeIcon();
+    loadStats();
+  });
+</script>
+</body>
+</html>
